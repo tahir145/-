@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نسبة النجاح</title>
+    <style>
+        body{
+            background-color: rgb(204, 211, 207);
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        section{
+            padding: 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            row-gap: 10px;
+            color: rgb(0, 0, 0);
+            box-shadow: 2px 2px 2px 1px rgb(49, 47, 47);
+            width: 80%;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 5px;
+        }
+        input[type*="text"]{
+            width: 80%;
+            margin: 4px auto;
+            padding: 15px 5%;
+            font-size: 1.5rem;
+            border-radius: 6px;
+            font-family: monospace;
+            border: none;
+            background-color: rgb(190, 190, 198);
+            transition: all ease 1s;
+        }
+        input[type*="text"]:focus{
+            outline: none;
+            border: 0.1px solid rgb(150, 134, 134);
+        }
+        input[type*="text"]:active{
+            transform: translate(2px, -2px) scale(1.1);
+        }
+        input[type^="submit"]{
+            width: 60%;
+            max-width: 200px;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background-color: rgb(11, 52, 118);
+            font-size: large;
+            font-weight: bolder;
+            color: rgb(255, 255, 255);
+            cursor: pointer;
+        }
+        input[type^="submit"]:hover{
+            background-color: rgb(33, 70, 130);
+        }
+        h1{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            animation: color 2s ease 0s infinite normal both;
+            transition: ease all 1s;
+        }
+        @keyframes color{
+            0%{
+                color: rgb(3, 5, 34);
+                transform: scale(1.05);
+            }
+            100%{
+                color: black;
+                transform: scale(1.07);
+            }
+        }
+        .res{
+            font-size: 1.2rem;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bolder;
+            letter-spacing: 1px;
+            word-spacing: 3px;
+            text-align: center;
+        }
+       
+        #res{
+            color: red;
+            font-size: 1.5rem;
+        }
+        #nb{
+            color: red;
+            font-family: monospace;
+            padding: 5px 10px;
+        }
+        #result-message {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+        }
+        .failure {
+            color: #d63031;
+        }
+        
+        /* Confetti styles */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            animation: fall linear forwards;
+            z-index: 1000;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        /* Media queries for responsive design */
+        @media screen and (max-width: 768px) {
+            section {
+                width: 90%;
+                padding: 20px 10px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .res {
+                font-size: 1rem;
+            }
+            #res {
+                font-size: 1.2rem;
+            }
+            input[type*="text"] {
+                font-size: 1.2rem;
+                padding: 10px 5%;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+            .res {
+                font-size: 0.9rem;
+            }
+            #res {
+                font-size: 1.1rem;
+            }
+            input[type*="submit"] {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <h1>توقع نسبة النجاح في الباكالوريا</h1>
+        <input type="text" autocomplete="off" name="" placeholder=" اسم المترشح" id="name">
+        <p id="nb"></p>
+        <input type="submit" value="احسب نسبة النجاح" id="send">
+        <p class="res"><span id="res"></span></p>
+        <div id="result-message"></div>
+    </section>
+    
+    <script>
+      
+        let res = document.getElementById('res');
+        let std_name = document.getElementById('name');
+        let send = document.getElementById('send');
+        let resultMessage = document.getElementById('result-message');
+        let redom_number = 0;
+        
+        std_name.addEventListener('input', function get_numb(){
+            redom_number = Math.floor(Math.random() * 101);
+        });
+        
+        // Function to create confetti/balloons
+        function createConfetti() {
+            const colors = ['#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590'];
+            const confettiCount = 150;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Random position, color, size and animation duration
+                const left = Math.random() * 100;
+                const size = Math.random() * 10 + 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 2;
+                
+                confetti.style.left = left + 'vw';
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                confetti.style.backgroundColor = color;
+                confetti.style.animationDuration = duration + 's';
+                confetti.style.animationDelay = delay + 's';
+                
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation completes
+                setTimeout(() => {
+                    confetti.remove();
+                }, (duration + delay) * 1000);
+            }
+        }
+        
+        send.addEventListener('click', function(){
+            if(std_name.value != ''){
+                document.getElementById('nb').innerHTML = '';
+                
+                res.innerHTML = `نسبة النجاح هي  ${redom_number}%`;
+                
+                // Check if student passed (score > 50)
+                if(redom_number > 50) {
+                    // Success message
+                    resultMessage.innerHTML = `هنيئا لك  يا  ${std_name.value}`;
+                    resultMessage.className = "success";
+                    // Create confetti effect
+                    createConfetti();
+                } else {
+                    // Failure message
+                    resultMessage.innerHTML = `اتمنى  الا  تكون  هذه  هي  النسبة النجاح  بالتوفيق يا  ${std_name.value}` ;
+                    resultMessage.className = "failure";
+                }
+            } else {
+                document.getElementById('nb').innerHTML = "الرجاء ادخال اسم المترشح";
+                resultMessage.innerHTML = "";
+            }
+        });
+    </script>
+</body>
+</html>
